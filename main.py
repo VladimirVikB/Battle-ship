@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, choice
 
 #Точка координат
 class Dot:
@@ -61,6 +61,7 @@ class Ship:
 
 # Игровое поле
 class Board:
+    point = ""
     def __init__(self, hidden=False, size=6):
         self.size = size
         self.hidden = hidden
@@ -125,13 +126,16 @@ class Board:
                     self.count += 1
                     self.contour(ship, verb=True)
                     print("Корабль уничтожен!")
+                    self.point = ""
                     return False
                 else:
                     print("Корабль ранен!")
+                    self.point = 1
                     return True
 
         self.field[d.x][d.y] = "*"
         print("Мимо!")
+        self.point = ""
         return False
 
 
@@ -158,10 +162,17 @@ class Player:
 
 # Игрок Компьютер
 class AI(Player):
+
     def ask(self):
-        d = Dot(randint(0, 5), randint(0, 5))
-        print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
-        return d
+        if Board.point == "":
+            d = Dot(randint(0, 5), randint(0, 5))
+            print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
+            return d
+        else:
+            d = Dot(choice(),  choice())
+            print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
+            return d
+
 
 # Игрок Пользователь
 class User(Player):
