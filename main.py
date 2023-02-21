@@ -126,16 +126,16 @@ class Board:
                     self.count += 1
                     self.contour(ship, verb=True)
                     print("Корабль уничтожен!")
-                    self.point = ""
+                    Board.point = ""
                     return False
                 else:
                     print("Корабль ранен!")
-                    self.point = 1
+                    Board.point = 1
                     return True
 
         self.field[d.x][d.y] = "*"
         print("Мимо!")
-        self.point = ""
+        Board.point = ""
         return False
 
 
@@ -162,16 +162,22 @@ class Player:
 
 # Игрок Компьютер
 class AI(Player):
-
+    lst = []# записываем ходы
     def ask(self):
+        around_choice = choice(((0, 1), (-1, 0), (0, 1), (1, 0)))
+# если корабль не ранен то случайный ход
         if Board.point == "":
+# дописать проверку на входжение рандом хода в список уже пройденных клеток
             d = Dot(randint(0, 5), randint(0, 5))
             print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
-            return d
+            AI.lst.append((d.x, d.y))
+# если корабль ранен пытаемся добивать
         else:
-            d = Dot(choice(),  choice())
+            d_x = AI.lst[-1][0] + around_choice[0]
+            d_y = AI.lst[-1][1] + around_choice[1]
+            d = Dot(d_x, d_y)
             print(f"Ход компьютера: {d.x + 1} {d.y + 1}")
-            return d
+        return d
 
 
 # Игрок Пользователь
